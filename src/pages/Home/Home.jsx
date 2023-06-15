@@ -1,16 +1,47 @@
-import React, { useContext ,useState} from 'react'
+import React, { useContext ,useState,useEffect} from 'react'
 import Navbaar from '../../components/Navbar/Navbaar'
 import './Home.css'
 import toast from 'react-hot-toast'
 import { Context, server } from '../../main'
 import axios from 'axios'
-import Loder from '../../components/Loder/Loder'
-
+import Loader from '../../components/Loder/Loder'
+import TodoIteam from '../../components/TodoIteam/TodoIteam'
 function Home() {
   const {user,isAuthenticated,loading} = useContext(Context)
   const [title, setTitle] = useState('');
   const [description, setDescription] = useState('');
-  const [loader,setLoader]= useState(false)
+  const [loder,setloder]= useState(false)
+  const [tasks, setTasks] = useState([]);
+  const [refresh, setRefresh] = useState(false);
+  const [loader, setloader] = useState(false);
+  const updateHandler = async (id) => {
+    try {
+      const { data } = await axios.put(
+        `${server}/task/${id}`,
+        {},
+        {
+          withCredentials: true,
+        }
+      );
+
+      toast.success(data.message);
+      setRefresh((prev) => !prev);
+    } catch (error) {
+      toast.error(error.response.data.message);
+    }
+  };
+  const deleteHandler = async (id) => {
+    try {
+      const { data } = await axios.delete(`${server}/task/${id}`, {
+        withCredentials: true,
+      });
+
+      toast.success(data.message);
+      setRefresh((prev) => !prev);
+    } catch (error) {
+      toast.error(error.response.data.message);
+    }
+  };
   const handleSubmit = async(e) => {
     e.preventDefault();
     // Validation checks
@@ -18,7 +49,7 @@ function Home() {
       return;
     }
     try {
-      setLoader(true)
+      setloder(true)
       const data = await axios.post(`${server}/task/new`,{
         title,
         description
@@ -32,16 +63,30 @@ function Home() {
       toast.success(data.message)
       setTitle("")
       setDescription("")
-      setLoader(false)
+      setloder(false)
     } catch (error) {
       toast.error(data.message)
       setTitle("")
       setDescription("")
-      setLoader(false)
+      setloder(false)
     }
     
   }
-  return loading?(<Loder></Loder>):(
+  
+  useEffect(() => {
+    axios
+      .get(`${server}/task/mytask`, {
+        withCredentials: true,
+      })
+      .then((res) => {
+        setTasks(res.data.tasks);
+      })
+      .catch((e) => {
+        toast.error(e.response.data.message);
+      });
+  }, [refresh]);
+ 
+  return loading?(<Loader></Loader>):(
 
     <div>
       <Navbaar></Navbaar>
@@ -59,9 +104,21 @@ function Home() {
         onChange={(e) => setDescription(e.target.value)}
         required
       ></textarea>
-      <button type="submit" onClick={handleSubmit} disabled={loader}>Add Todo</button>
+      <button type="submit" onClick={handleSubmit} disabled={loder}>Add Todo</button>
     </form>
-      
+    <section className="todosContainer">
+        {tasks.map((i) => (
+          <TodoIteam
+            title={i.title}
+            description={i.description}
+            isCompleted={i.isCompleted}
+            updateHandler={updateHandler}
+            deleteHandler={deleteHandler}
+            id={i._id}
+            key={i._id}
+          />
+        ))}
+      </section>
     </div>
   )
 }
