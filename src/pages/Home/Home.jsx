@@ -79,7 +79,7 @@ function Home() {
         withCredentials: true,
       })
       .then((res) => {
-        setTasks(res.data.tasks);
+        setTasks(res.data.task);
       })
       .catch((e) => {
         toast.error(e.response.data.message);
