@@ -1,11 +1,25 @@
 import React from 'react'
 import Navbaar from '../../components/Navbar/Navbaar'
 import { Context } from '../../main'
-import { useContext } from 'react'
+import { useContext,useEffect } from 'react'
 import './profile.css'
 import Loder from '../../components/Loder/Loder'
+import axios from "axios";
+import { server } from '../../main'
 function Profile() {
-  const {isAuthenticated,user,loading} = useContext(Context)
+
+  const {isAuthenticated,user,loading,setUser,setLoading} = useContext(Context)
+  useEffect(() => {
+    setLoading(true)
+    axios.get(`${server}/user/me`, { 
+      withCredentials: true,
+    }).then((res) => {
+    setUser(res.data.user); 
+    setLoading(false)
+     }) .catch((error) => { setUser({});
+    setLoading(false)
+    });
+  }, []);
   return loading?(<Loder></Loder>):(
     <>
     <div>

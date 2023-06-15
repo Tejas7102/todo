@@ -86,7 +86,7 @@ function Home() {
       });
   }, [refresh]);
  
-  return loading?(<Loader></Loader>):(
+  return (
 
     <div>
       <Navbaar></Navbaar>
