@@ -1,0 +1,60 @@
+.home{
+    margin-top: 7.5vh;
+    background-image: url("https://godwallpaper.in/wallpaper/M005/C049/SC094/large/Welcome_HDVHZA.jpg");
+    background-repeat: no-repeat;
+    background-size: cover;
+    width: 100vw;
+    height: 92.5vh;
+}
+.todo-form {
+    display: flex;
+    flex-direction: column;
+    max-width: 90vw;
+    margin: 9vh auto;
+    background-color: #f5f5f5;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  }
+  
+  .todo-form input,
+  .todo-form textarea {
+    padding: 10px;
+    margin-bottom: 10px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    font-size: 16px;
+  }
+  
+  .todo-form input:focus,
+  .todo-form textarea:focus {
+    outline: none;
+    border-color: #3498db;
+  }
+  
+  .todo-form button {
+    padding: 10px 20px;
+    background-color: #4caf50;
+    color: #ffffff;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 16px;
+  }
+  
+  .todo-form button:hover {
+    background-color: #45a049;
+  }
+  
+  /* Responsive Styles */
+  @media screen and (max-width: 600px) {
+    .todo-form {
+      max-width: 100%;
+    }
+  
+    .todo-form input,
+    .todo-form textarea {
+      width: 100%;
+    }
+  }
+  
