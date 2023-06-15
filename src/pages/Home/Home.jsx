@@ -107,7 +107,7 @@ function Home() {
       <button type="submit" onClick={handleSubmit} disabled={loder}>Add Todo</button>
     </form>
     <section className="todosContainer">
-        {tasks.map((i) => (
+        {tasks?tasks.map((i) => (
           <TodoIteam
             title={i.title}
             description={i.description}
@@ -117,7 +117,7 @@ function Home() {
             id={i._id}
             key={i._id}
           />
-        ))}
+        )):null}
       </section>
     </div>
   )
